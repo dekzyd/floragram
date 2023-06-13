@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-floragram-dev-133905-authRole",
+      "UnauthRoleArn": "arn:aws:iam::211242742533:role/amplify-floragram-dev-133905-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::211242742533:role/amplify-floragram-dev-133905-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-floragram-dev-133905-deployment",
+      "UnauthRoleName": "amplify-floragram-dev-133905-unauthRole",
+      "StackName": "amplify-floragram-dev-133905",
+      "StackId": "arn:aws:cloudformation:eu-north-1:211242742533:stack/amplify-floragram-dev-133905/4d936b20-0530-11ee-a29f-06edd24a6284",
+      "AmplifyAppId": "d2er9k83mwy56f"
+    },
+    "categories": {
+      "storage": {
+        "floragramstorage": {}
+      },
+      "api": {
+        "floragram": {}
+      },
+      "auth": {
+        "floragrama083e04a": {}
+      }
+    }
+  }
+}

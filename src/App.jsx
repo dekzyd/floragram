@@ -1,35 +1,96 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
+
+import { Amplify, Auth } from "aws-amplify";
+import awsExports from "./aws-exports";
+
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "@aws-amplify/ui-react/styles.css";
+
+import SiteNav from "./components/common/SiteNav";
+import SiteFooter from "./components/common/SiteFooter";
+import HomePage from "./components/home/HomePage";
+import LoginPage from "./components/auth/LoginPage";
+import RegisterPage from "./components/auth/RegisterPage";
+import ValidatePage from "./components/auth/ValidatePage";
+import Contacts from "./components/contacts/Contacts";
+import ProfilePage from "./pages/ProfilePage";
+
+Amplify.configure(awsExports);
+
+// set and get values from local storage
+const isLoggedIn = localStorage.getItem("loggedIn") || false;
+
+const setLocalStorage = (items) => {
+  localStorage.setItem("loggedIn", items);
+};
+
+const removeLocalStorage = () => {
+  localStorage.removeItem("loggedIn");
+};
+
+// check if someone is logged in using Auth
+// const checkUser = async () => {
+//   try {
+//     const user = await Auth.currentUserInfo();
+//     console.log(user);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+// checkUser();
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isAuthenticated, setIsAuthenticated] = useState(isLoggedIn);
+
+  function updateAuthStatus(authStatus) {
+    setIsAuthenticated(authStatus);
+    setLocalStorage(authStatus);
+  }
+
+  console.log(isLoggedIn);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div>
+      <SiteNav
+        removeLocalStorage={removeLocalStorage}
+        isAuthenticated={isAuthenticated}
+        updateAuthStatus={updateAuthStatus}
+      />
+      <Routes>
+        <Route
+          path="*"
+          element={<HomePage isAuthenticated={isAuthenticated} />}
+        />
+        <Route
+          path="/"
+          exact={true}
+          element={<HomePage isAuthenticated={isAuthenticated} />}
+        />
+        <Route
+          path="/login"
+          element={
+            <LoginPage
+              updateAuthStatus={updateAuthStatus}
+              isAuthenticated={isAuthenticated}
+            />
+          }
+        />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/validate" element={<ValidatePage />} />
+        <Route
+          path="/contacts"
+          element={<Contacts isAuthenticated={isAuthenticated} />}
+        />
+        <Route
+          path="/profile"
+          element={<ProfilePage isAuthenticated={isAuthenticated} />}
+        />
+      </Routes>
+      <SiteFooter />
+    </div>
+  );
 }
 
-export default App
+export default App;
