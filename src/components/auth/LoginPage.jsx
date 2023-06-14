@@ -24,7 +24,7 @@ function LoginPage(props) {
       await Auth.signIn(username, password);
 
       props.updateAuthStatus(true);
-      // navigate("/profile");
+      navigate("/profile");
     } catch (err) {
       setIsError(err);
       console.log(err);
